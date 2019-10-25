@@ -1,14 +1,16 @@
 // Crafted with guidance from Section 07-09
 
-function setTrain(trainTrain, cb) {
-    localforage.setItem("trains-data", trainTrain).then(cb);
-};
+function setTrain(newTrain, cb) {
+    localforage.setItem("trains-data", newTrain).then(cb);
+    console.log("Set")
+}
 
 function getTrains(cb) {
     localforage.getItem("trains-data").then(function (result) {
-        cb(result || [])
+        cb(result || []);
+        console.log("Gotten")
     });
-};
+}
 
 function handleTrain(newName, newDest, newTime, newFreq) {
     getTrains(function (trainArr) {
@@ -18,6 +20,7 @@ function handleTrain(newName, newDest, newTime, newFreq) {
             time: newTime,
             freq: newFreq
         });
+        console.log("Handled")
         setTrain(trainArr, updateTrain);
     });
 }
@@ -30,12 +33,40 @@ function storeTrain() {
         const trainTime = document.getElementById("formTime").value;
         const trainFreq = document.getElementById("formFrequency").value;
         handleTrain(trainName, trainDest, trainTime, trainFreq);
-
+console.log("Stored")
     })
 }
 // TS thru here, breaking=========================
 // Actually call it
 storeTrain();
+
+// // Trying alt rendering method Dan M. sent over
+
+// function updateTrain(result) {
+//     let trainTableBody = document.getElementById("tableBody");
+//     trainTableBody.innerHTML = "";
+//     for (let i = 0; i < result.length; i++) {
+//         let tFrequency = result[i].frequency;
+//         let firstTrainTime = result[i].trainTime;
+//         let firstTimeConverted = moment(firstTrainTime, "HH:mm").subtract(1, "years");
+//         let currentTime = moment();
+//         console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+//         let diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+//         console.log("DIFFERENCE IN TIME " + diffTime);
+//         let tRemainder = diffTime % tFrequency;
+//         let tMinutesTillTrain = tFrequency - tRemainder;
+//         let nextTrain = moment().add(tMinutesTillTrain, "minutes");
+//         console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
+//         trainTableBody.innerHTML += "<tr> <td>" + result[i].name +
+//             "</td> <td>" + result[i].destination +
+//             "</td> <td>" + result[i].frequency +
+//             "</td> <td>" + nextTrain.format("hh:mm") +
+//             "</td> <td>" + tMinutesTillTrain +
+//             "</td> </tr>";
+//     }
+//     console.log("Updated")
+// };
+
 
 function updateTrain() {
 
@@ -80,6 +111,8 @@ function updateTrain() {
         trainTr.append(awayTd);
 
         trainTableBody.append(trainTr);
+        // renderTrainArr();
+        console.log("Updated")
     })
 }
 
