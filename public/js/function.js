@@ -1,14 +1,12 @@
 // Crafted with guidance from Section 07-09
 
-function setTrain(newTrain, cb) {
-    localforage.setItem("trains", newTrain).then(function () {
-        cb();
-    });
+function setTrain(trainTrain, cb) {
+    localforage.setItem("trains-data", trainTrain).then(cb);
 };
 
 function getTrains(cb) {
-    localforage.getItem("trains").then(function (results) {
-        cb(results || [])
+    localforage.getItem("trains-data").then(function (result) {
+        cb(result || [])
     });
 };
 
@@ -35,7 +33,7 @@ function storeTrain() {
 
     })
 }
-
+// TS thru here, breaking=========================
 // Actually call it
 storeTrain();
 
@@ -45,11 +43,11 @@ function updateTrain() {
     const trainTr = document.createElement("tr");
 
     getTrains(function (trainArr) {
-        const updateNameTd = document.createElement("td");
-        const updateDestTd = document.createElement("td");
-        const updateFreqTd = document.createElement("td");
-        const updateNextTd = document.createElement("td");
-        const updateAwayTd = document.createElement("td");
+        const nameTd = document.createElement("td");
+        const destTd = document.createElement("td");
+        const freqTd = document.createElement("td");
+        const nextTd = document.createElement("td");
+        const awayTd = document.createElement("td");
 
         let train = trainArr[trainArr.length - 1];
 
@@ -69,23 +67,23 @@ function updateTrain() {
 
         const uNextTrain = moment(uNextTrainObject).format("HH:mm");
 
-        updateNameTd.innerText = train.name;
-        updateDestTd.innerText = train.dest;
-        updateFreqTd.innerText = train.freq;
-        updateNextTd.innerText = uNextTrain;
-        updateAwayTd.innerText = uMinUntil;
+        nameTd.innerText = train.name;
+        destTd.innerText = train.dest;
+        freqTd.innerText = train.freq;
+        nextTd.innerText = uNextTrain;
+        awayTd.innerText = uMinUntil;
 
-        trainTr.append(updateNameTd);
-        trainTr.append(updateDestTd);
-        trainTr.append(updateFreqTd);
-        trainTr.append(updateNextTd);
-        trainTr.append(updateAwayTd);
+        trainTr.append(nameTd);
+        trainTr.append(destTd);
+        trainTr.append(freqTd);
+        trainTr.append(nextTd);
+        trainTr.append(awayTd);
 
         trainTableBody.append(trainTr);
     })
 }
 
-function rendertrainArr() {
+function renderTrainArr() {
 
     const trainTableBody = document.getElementById("tableBody");
 
@@ -95,7 +93,7 @@ function rendertrainArr() {
 
         for (let i = 0; i < trainArr.length; i++) {
 
-            const newTr = document.createElement("tr");
+            const trainTr = document.createElement("tr");
             const nameTd = document.createElement("td");
             const destTd = document.createElement("td");
             const freqTd = document.createElement("td");
@@ -126,24 +124,15 @@ function rendertrainArr() {
             nextTd.innerText = nextTrain;
             awayTd.innerText = minUntil;
 
-            newTr.append(nameTd);
-            newTr.append(destTd);
-            newTr.append(freqTd);
-            newTr.append(nextTd);
-            newTr.append(awayTd);
+            trainTr.append(nameTd);
+            trainTr.append(destTd);
+            trainTr.append(freqTd);
+            trainTr.append(nextTd);
+            trainTr.append(awayTd);
 
-            trainTableBody.append(newTr);
+            trainTableBody.append(trainTr);
         }
     })
 }
 
-rendertrainArr();
-
-const trainArr = [];
-
-const sample = {
-    name: "The Sample Express",
-    dest: "Omaha, NE",
-    time: 1245,
-    freq: 0100
-};
+renderTrainArr();
