@@ -32,16 +32,17 @@ function storeTrain() {
         const trainTime = document.getElementById("formTime").value;
         const trainFreq = document.getElementById("formFrequency").value;
         handleTrain(trainName, trainDest, trainTime, trainFreq);
+
     })
 }
 
 // Actually call it
 storeTrain();
 
-function updatetrainArr() {
+function updateTrain() {
 
     const trainTableBody = document.getElementById("tableBody");
-    const trainTR = document.createElement("tr");
+    const trainTr = document.createElement("tr");
 
     getTrains(function (trainArr) {
         const updateNameTd = document.createElement("td");
@@ -74,13 +75,13 @@ function updatetrainArr() {
         updateNextTd.innerText = uNextTrain;
         updateAwayTd.innerText = uMinUntil;
 
-        trainTR.append(updateNameTd);
-        trainTR.append(updateDestTd);
-        trainTR.append(updateFreqTd);
-        trainTR.append(updateNextTd);
-        trainTR.append(updateAwayTd);
+        trainTr.append(updateNameTd);
+        trainTr.append(updateDestTd);
+        trainTr.append(updateFreqTd);
+        trainTr.append(updateNextTd);
+        trainTr.append(updateAwayTd);
 
-        trainTableBody.append(trainTR);
+        trainTableBody.append(trainTr);
     })
 }
 
