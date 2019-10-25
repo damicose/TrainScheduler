@@ -27,16 +27,70 @@ function handleTrain(newName, newDest, newTime, newFreq) {
 function storeTrain() {
     document.getElementById("submitBtn").addEventListener("click", function () {
 
-        let trainName = document.getElementById("formTrainName").value;
-        let trainDest = document.getElementById("formDestination").value;
-        let trainTime = document.getElementById("formTime").value;
-        let trainFreq = document.getElementById("formFrequency").value;
+        const trainName = document.getElementById("formTrainName").value;
+        const trainDest = document.getElementById("formDestination").value;
+        const trainTime = document.getElementById("formTime").value;
+        const trainFreq = document.getElementById("formFrequency").value;
         handleTrain(trainName, trainDest, trainTime, trainFreq);
     })
 }
 
 // Actually call it
 storeTrain();
+
+function rendertrainArr() {
+
+    const trainTableBody = document.getElementById("tableBody");
+
+    getTrains(function (trainArr) {
+
+        trainTableBody.innerHTML = "";
+
+        for (let i = 0; i < trainArr.length; i++) {
+
+            const newTr = document.createElement("tr");
+            const nameTd = document.createElement("td");
+            const destTd = document.createElement("td");
+            const freqTd = document.createElement("td");
+            const nextTd = document.createElement("td");
+            const awayTd = document.createElement("td");
+
+            let train = trainArr[i];
+
+            const trainFreq = train.freq;
+
+            const trainInit = train.time;
+
+            const trainInitConvert = moment(trainInit, "HH:mm").subtract(1, "years");
+
+            const diffTime = moment().diff(moment(trainInitConvert), "minutes");
+
+            const timeRemain = diffTime % trainFreq;
+
+            const minUntil = trainFreq - timeRemain;
+
+            const nextTrainObject = moment().add(minUntil, "minutes");
+
+            const nextTrain = moment(nextTrainObject).format("HH:mm");
+
+            nameTd.innerText = train.name;
+            destTd.innerText = train.dest;
+            freqTd.innerText = train.freq;
+            nextTd.innerText = nextTrain;
+            awayTd.innerText = minUntil;
+
+            newTr.append(nameTd);
+            newTr.append(destTd);
+            newTr.append(freqTd);
+            newTr.append(nextTd);
+            newTr.append(awayTd);
+
+            trainTableBody.append(newTr);
+        }
+    })
+}
+
+rendertrainArr();
 
 const trainArr = [];
 
@@ -46,7 +100,3 @@ const sample = {
     time: 1245,
     freq: 0100
 };
-
-
-
-// Looks as if will need for loop to iterate through? 'th scope="row"' i++ ?? Otherwise ugly hard code?
