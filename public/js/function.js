@@ -38,6 +38,52 @@ function storeTrain() {
 // Actually call it
 storeTrain();
 
+function updatetrainArr() {
+
+    const trainTableBody = document.getElementById("tableBody");
+    const trainTR = document.createElement("tr");
+
+    getTrains(function (trainArr) {
+        const updateNameTd = document.createElement("td");
+        const updateDestTd = document.createElement("td");
+        const updateFreqTd = document.createElement("td");
+        const updateNextTd = document.createElement("td");
+        const updateAwayTd = document.createElement("td");
+
+        let train = trainArr[trainArr.length - 1];
+
+        const uTrainFreq = train.freq;
+
+        const uTrainInit = train.time;
+
+        const uTrainInitConvert = moment(uTrainInit, "HH:mm").subtract(1, "years");
+
+        const uDiffTime = moment().diff(moment(uTrainInitConvert), "minutes");
+
+        const uTimeRemain = uDiffTime % uTrainFreq;
+
+        const uMinUntil = uTrainFreq - uTimeRemain;
+
+        const uNextTrainObject = moment().add(uMinUntil, "minutes");
+
+        const uNextTrain = moment(uNextTrainObject).format("HH:mm");
+
+        updateNameTd.innerText = train.name;
+        updateDestTd.innerText = train.dest;
+        updateFreqTd.innerText = train.freq;
+        updateNextTd.innerText = uNextTrain;
+        updateAwayTd.innerText = uMinUntil;
+
+        trainTR.append(updateNameTd);
+        trainTR.append(updateDestTd);
+        trainTR.append(updateFreqTd);
+        trainTR.append(updateNextTd);
+        trainTR.append(updateAwayTd);
+
+        trainTableBody.append(trainTR);
+    })
+}
+
 function rendertrainArr() {
 
     const trainTableBody = document.getElementById("tableBody");
